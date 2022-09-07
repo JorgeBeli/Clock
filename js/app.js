@@ -1,5 +1,6 @@
 const timersWraper = document.querySelector('.timers__wraper')
 const options = document.querySelectorAll('i')
+const home = document.querySelector('#home')
 
 const addOptionsEvents = () =>{
     for(option of options){
@@ -7,24 +8,44 @@ const addOptionsEvents = () =>{
             let id = e.target.id
             const option = document.querySelector(`#${id}`)
             option.style.borderBottom = '1px solid #202020'
+            if(id === 'home'){
+                timer.style.borderBottom = 'none'
+                alarm.style.borderBottom = 'none'
+                stopwatch.style.borderBottom = 'none'
+                homeHTML()
+                getHome()
+            }
             if(id === 'stopwatch'){
+                home.style.borderBottom = 'none'
                 timer.style.borderBottom = 'none'
                 alarm.style.borderBottom = 'none'
                 stopwatchHTML()
                 getStopwatch()
             }
             if(id === 'timer'){
+                home.style.borderBottom = 'none'
                 stopwatch.style.borderBottom = 'none'
                 alarm.style.borderBottom = 'none'
                 timerHTML()
                 getTimer()
             }
             if(id === 'alarm'){
-                timer.style.borderBottom = 'none'
+                home.style.borderBottom = 'none'
                 stopwatch.style.borderBottom = 'none'
+                timer.style.borderBottom = 'none'
             }
         })
     }
+}
+
+const homeHTML = () =>{
+    timersWraper.innerHTML = `
+        <div class='home__wraper'>
+            <div class='home__display'>
+
+            </div>
+        </div>
+    `
 }
 
 const stopwatchHTML = () =>{
@@ -62,6 +83,29 @@ const timerHTML = () =>{
         </div>
     </div>
     `
+}
+
+const currentDate = () =>{
+    const home = document.querySelector('.home__display')
+    const date = new Date()
+    let [hour, min, sec] = [date.getHours(), date.getMinutes(), date.getSeconds()];
+    if(sec < 10){
+        sec = '0' + sec
+    }
+    if(min < 10){
+        min = '0' + min
+    }
+    if(hour < 10){
+        hour = '0' + hour
+    }
+    home.innerHTML = hour + ':' + min + ':' + sec
+}
+
+const getHome = () =>{
+    currentDate()
+    dateInterval = setInterval( () => {
+        currentDate()
+    }, 1000)
 }
 
 const getStopwatch = () =>{
@@ -256,3 +300,4 @@ function onlyNumberKey(evt) {
 }
 
 addOptionsEvents()
+home.click()

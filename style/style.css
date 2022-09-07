@@ -32,6 +32,17 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
+.timers__wraper .home__wraper {
+  width: fit-content;
+  height: 50vh;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.timers__wraper .home__wraper .home__display {
+  font-size: 5rem;
+}
 .timers__wraper .stopwatch__wraper {
   width: fit-content;
   height: 50vh;
