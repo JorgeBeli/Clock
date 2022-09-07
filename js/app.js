@@ -275,7 +275,7 @@ const getTimer = () =>{
             timerMinutes.value = null
             timerSeconds.value = null
         }else{
-            alert('intervalo')
+            buttonReset.click()
         }
     })
 
