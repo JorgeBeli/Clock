@@ -21,6 +21,7 @@ const addOptionsEvents = () =>{
                 alarm.style.borderBottom = 'none'
                 stopwatchHTML()
                 getStopwatch()
+                clearInterval(dateInterval)
             }
             if(id === 'timer'){
                 home.style.borderBottom = 'none'
@@ -28,11 +29,13 @@ const addOptionsEvents = () =>{
                 alarm.style.borderBottom = 'none'
                 timerHTML()
                 getTimer()
+                clearInterval(dateInterval)
             }
             if(id === 'alarm'){
                 home.style.borderBottom = 'none'
                 stopwatch.style.borderBottom = 'none'
                 timer.style.borderBottom = 'none'
+                clearInterval(dateInterval)
             }
         })
     }
@@ -205,6 +208,11 @@ const getTimer = () =>{
                 hour = 0
             }
             
+            if(hour === 0 && min === 0 && sec === 0){
+                buttonReset.click()
+                playSound()
+            }
+
             if(sec > 59){
                 temp = sec / 60
                 min += Math.floor(temp)
@@ -224,8 +232,6 @@ const getTimer = () =>{
             if(hour < 10){
                 hour = '0' + hour
             }
-
-
 
             timerDisplay.innerHTML = hour + ':' + min + ':' + sec 
 
@@ -272,6 +278,7 @@ const getTimer = () =>{
             alert('intervalo')
         }
     })
+
     buttonPause.addEventListener('click', () =>{
         if(timerInterval){
             clearInterval(timerInterval)
