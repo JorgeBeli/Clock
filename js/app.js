@@ -166,7 +166,7 @@ const getTimer = () =>{
                 min += Math.floor(temp)
                 sec = sec % 60
             }
-            if(min > 29){
+            if(min > 59){
                 temp = min / 60
                 hour += Math.floor(temp)
                 min = min % 60
