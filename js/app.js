@@ -182,6 +182,19 @@ const getTimer = () =>{
     const buttonPause = document.querySelector('#button__pause')
     const buttonReset = document.querySelector('#button__reset')
 
+    buttonPause.disabled = true
+    buttonPause.style.cursor = 'not-allowed'
+
+    checkInput = setInterval(() =>{
+        if(timerHours.value === '' && timerMinutes.value === '' && timerSeconds.value === ''){
+            buttonStart.disabled = true
+            buttonStart.style.cursor = 'not-allowed'
+        }else if(timerHours.value >= 0 && timerMinutes.value >= 0  && timerSeconds.value >= 0){
+            buttonStart.disabled = false
+            buttonStart.style.cursor = 'pointer'
+        }
+    }, 100)
+
     timerDisplay.innerHTML = '00:00:00'
     let timerInterval = 0
     let hour, min, sec = 0
@@ -190,51 +203,56 @@ const getTimer = () =>{
         timerDisplay.style.display = 'flex'
         timerInputs.style.display = 'none'
         if(!timerInterval){
-            hour = timerHours.value
-            min = timerMinutes.value
-            sec = timerSeconds.value
-            
-            sec = parseInt(sec)
-            min = parseInt(min)
-            hour = parseInt(hour)
-            
-            if(Number.isNaN(sec)){
-                sec = 0
+            clearInterval(checkInput)
+            buttonPause.disabled = false
+            buttonPause.style.cursor = 'pointer'
+            prevTime = sec
+            if(prevTime === 0){
+                hour = timerHours.value
+                min = timerMinutes.value
+                sec = timerSeconds.value
+                
+                sec = parseInt(sec)
+                min = parseInt(min)
+                hour = parseInt(hour)
+                
+                if(Number.isNaN(sec)){
+                    sec = 0
+                }
+                if(Number.isNaN(min)){
+                    min = 0
+                }
+                if(Number.isNaN(hour)){
+                    hour = 0
+                }
+                
+                if(hour === 0 && min === 0 && sec === 0){
+                    buttonReset.click()
+                    playSound()
+                }
+                
+                if(sec > 59){
+                    temp = sec / 60
+                    min += Math.floor(temp)
+                    sec = sec % 60
+                }
+                if(min > 59){
+                    temp = min / 60
+                    hour += Math.floor(temp)
+                    min = min % 60
+                }
+                if(sec < 10){
+                    sec = '0' + sec
+                }
+                if(min < 10){
+                    min = '0' + min
+                }
+                if(hour < 10){
+                    hour = '0' + hour
+                }
+    
+                timerDisplay.innerHTML = hour + ':' + min + ':' + sec 
             }
-            if(Number.isNaN(min)){
-                min = 0
-            }
-            if(Number.isNaN(hour)){
-                hour = 0
-            }
-            
-            if(hour === 0 && min === 0 && sec === 0){
-                buttonReset.click()
-                playSound()
-            }
-
-            if(sec > 59){
-                temp = sec / 60
-                min += Math.floor(temp)
-                sec = sec % 60
-            }
-            if(min > 59){
-                temp = min / 60
-                hour += Math.floor(temp)
-                min = min % 60
-            }
-            if(sec < 10){
-                sec = '0' + sec
-            }
-            if(min < 10){
-                min = '0' + min
-            }
-            if(hour < 10){
-                hour = '0' + hour
-            }
-
-            timerDisplay.innerHTML = hour + ':' + min + ':' + sec 
-
             timerInterval = setInterval(() =>{
                 sec = parseInt(sec)
                 min = parseInt(min)
@@ -274,19 +292,30 @@ const getTimer = () =>{
             timerHours.value = null
             timerMinutes.value = null
             timerSeconds.value = null
-        }else{
-            buttonReset.click()
         }
     })
-
     buttonPause.addEventListener('click', () =>{
         if(timerInterval){
+            buttonStart.disabled = false
+            buttonStart.style.cursor = 'pointer'    
             clearInterval(timerInterval)
             timerInterval = 0
         }
     })
     buttonReset.addEventListener('click', () =>{
+        checkInput = setInterval(() =>{
+            if(timerHours.value === '' && timerMinutes.value === '' && timerSeconds.value === ''){
+                buttonStart.disabled = true
+                buttonStart.style.cursor = 'not-allowed'
+            }else if(timerHours.value >= 0 && timerMinutes.value >= 0  && timerSeconds.value >= 0){
+                buttonStart.disabled = false
+                buttonStart.style.cursor = 'pointer'
+            }
+        }, 100)
         buttonPause.click()
+        buttonPause.disabled = true
+        buttonPause.style.cursor = 'not-allowed'
+        sec = 0
         timerDisplay.style.display = 'none'
         timerInputs.style.display = 'flex'
         timerDisplay.innerHTML = '00:00:00'
